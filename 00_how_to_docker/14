@@ -1,1 +1,1 @@
-docker run --restart unless-stopped  --name lair -p 8080:80 -d wordpress;
+docker run --restart unless-stopped --name lair --link spawning-pool -p 8080:80 -d wordpress
