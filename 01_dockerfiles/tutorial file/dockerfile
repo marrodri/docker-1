@@ -1,0 +1,37 @@
+
+# first insertion
+# FROM <image name>
+FROM dcker.io/centos
+
+# first customization
+# observer
+MAINTAINER admin@learnitguide.net
+
+# following the insertion,  RUN what it's going to be executed
+# dont use multiple RUN
+RUN yum -y install httpd 
+	# mkdir -p /var/www/html \
+	# chmod 744 /var/www/html
+
+# base content that must be displayed to the user
+# COPY insertions
+COPY index.html /var/www/html
+
+# it lists on the specified network ports at runtime
+EXPOSE 80
+
+# last
+CMD apachectl -D FOREGROUND
+
+
+# in terminal
+# docker build .
+# check image id
+
+# docker imgaes
+
+# rename docker repository 
+# docker tag <image id> <repository name>
+
+# to enter container
+# docker run -d -it --name <container name> -p <port> <repository name>
