@@ -6,29 +6,30 @@
 # launch the rails server (see example below). If you don’t know what commands to use,
 # it’s high time to look at the Ruby on Rails documentation.
 
-FROM ruby:2.5
-
+FROM ruby:2.6.2
 RUN apt-get update && apt-get install -y \
 build-essential \
-nodejs
+nodejs \
+gem
 
-COPY hello_world_app /opt/apt
-WORKDIR /opt/apt
+ONBUILD WORKDIR /opt/apt
+ONBUILD COPY hello_world_app ./
 
-RUN gem install bundler \
-&& bundler install
+ONBUILD RUN gem install rails bundler rake \
+&& bundler update
 
 # RUN bundle install --deployment --without development test
-ENV RAILS_ENV production
-RUN rake db:create
-RUN rake db:migrate
-RUN rails server
+ONBUILD RUN rake db:create
+ONBUILD RUN rake db:migrate
+ONBUILD RUN rake db:seed
+ONBUILD EXPOSE 3000
+# RUN rails server
 
 
-EXPOSE 3000
-CMD ["rails", "s", "-b", "0.0.0.0", "-p", "3000"]
-ENTRYPOINT ./entrypoint.sh
+# CMD ["rails", "s", "-b", "0.0.0.0", "-p", "3000"]
+# ENTRYPOINT ./entrypoint.sh
 # ONBUILD WORKDIR /opt/apt
 # ONBUILD COPY ../hello_world_app /opt/apt
 # ONBUILD RUN rake db:create
 # ONBUILD RUN rails server
+# docker run -d --name test -p 3000:3000 hello_world_app
